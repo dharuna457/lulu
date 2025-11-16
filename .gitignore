@@ -1,0 +1,58 @@
+# Build directories
+build/
+build-*/
+*.deb
+*.tar.gz
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.cmake
+!CMakeLists.txt
+
+# Qt
+*.pro.user
+*.pro.user.*
+moc_*.cpp
+qrc_*.cpp
+ui_*.h
+*.qm
+
+# C++
+*.o
+*.a
+*.so
+*.so.*
+*.la
+*.lo
+*.dylib
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Debian package build
+debian/*.substvars
+debian/*.log
+debian/files
+debian/tmp/
+debian/linuxdroid/
+
+# Logs
+*.log
+/var/log/linuxdroid/
+
+# Downloaded images (large files)
+*.iso
+*.img
+resources/images/*.iso
+resources/images/*.img
+
+# Instance data
+instances/

@@ -1,0 +1,24 @@
+linuxdroid (1.0.0) stable; urgency=medium
+
+  * Initial release of LinuxDroid
+  * Features:
+    - First-run setup wizard with 6 screens
+    - Automatic Android x86 image download
+    - Background download service with systemd
+    - Multi-instance Android emulator support
+    - KVM hardware acceleration
+    - Resume capability for interrupted downloads
+    - SHA256 checksum verification
+    - ADB bridge support
+    - System tray integration
+  * Supported Android versions:
+    - Android 9.0 (Pie) - Recommended
+    - Android 11 (R)
+    - Android 13 (Tiramisu)
+  * System requirements:
+    - Ubuntu 20.04+ or Debian 11+
+    - KVM-enabled CPU
+    - 8GB RAM minimum
+    - 20GB disk space
+
+ -- Dharun Ashokkumar <contact@tripletech.com>  Sun, 16 Nov 2025 00:00:00 +0000

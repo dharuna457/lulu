@@ -1,0 +1,33 @@
+#!/bin/bash
+set -e
+
+case "$1" in
+    purge)
+        echo "Removing LinuxDroid data..."
+
+        # Remove application directories
+        rm -rf /opt/linuxdroid 2>/dev/null || true
+        rm -rf /var/log/linuxdroid 2>/dev/null || true
+
+        # Disable and stop service
+        systemctl stop linuxdroid-download.service 2>/dev/null || true
+        systemctl disable linuxdroid-download.service 2>/dev/null || true
+
+        echo "LinuxDroid data removed."
+        ;;
+
+    remove)
+        echo "LinuxDroid removed."
+        echo "To remove all data, run: sudo apt purge linuxdroid"
+        ;;
+
+    upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
+        ;;
+
+    *)
+        echo "postrm called with unknown argument \`$1'" >&2
+        exit 1
+        ;;
+esac
+
+exit 0

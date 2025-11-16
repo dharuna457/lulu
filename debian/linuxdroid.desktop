@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=LinuxDroid
+GenericName=Android Emulator
+Comment=Professional Android Emulator for Linux
+Exec=/usr/bin/linuxdroid
+Icon=linuxdroid
+Terminal=false
+Categories=Development;Emulator;System;
+Keywords=android;emulator;qemu;kvm;virtualization;
+StartupNotify=true
+StartupWMClass=LinuxDroid

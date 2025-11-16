@@ -1,0 +1,21 @@
+Package: linuxdroid
+Version: 1.0.0
+Section: utils
+Priority: optional
+Architecture: amd64
+Depends: qemu-system-x86, libqt6core6, libqt6gui6, libqt6widgets6, libqt6network6, libvirt0, libgl1, libsdl2-2.0-0, curl, wget, systemd
+Recommends: cpu-checker, virt-manager
+Maintainer: Dharun Ashokkumar <contact@tripletech.com>
+Description: Modern Android Emulator for Linux
+ LinuxDroid is a high-performance Android emulator for Ubuntu/Debian
+ featuring KVM acceleration, multi-instance support, and easy setup.
+ .
+ Features:
+  - Hardware-accelerated via KVM/QEMU
+  - Multi-instance Android emulator
+  - Automatic Android x86 image download
+  - First-run setup wizard
+  - Background download service
+  - ADB integration
+ .
+ Includes automatic Android x86 image download and configuration.

@@ -1,0 +1,25 @@
+[Unit]
+Description=LinuxDroid Background Download Service
+After=network-online.target
+Wants=network-online.target
+Documentation=https://github.com/tripletech/linuxdroid
+
+[Service]
+Type=simple
+User=root
+ExecStart=/usr/bin/linuxdroid-daemon
+Restart=on-failure
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=linuxdroid-daemon
+
+# Security hardening
+PrivateTmp=true
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=false
+ReadWritePaths=/opt/linuxdroid /var/log/linuxdroid
+
+[Install]
+WantedBy=multi-user.target

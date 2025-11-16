@@ -1,0 +1,88 @@
+{
+  "version": "1.0",
+  "last_updated": "2024-11-16",
+  "images": [
+    {
+      "id": "android-9-pie",
+      "name": "Android 9.0 (Pie)",
+      "version": "9.0",
+      "codename": "Pie",
+      "architecture": "x86_64",
+      "size_mb": 1200,
+      "size_bytes": 1258291200,
+      "url": "https://sourceforge.net/projects/android-x86/files/Release%209.0/android-x86_64-9.0-r2.iso/download",
+      "mirror_url": "https://osdn.net/projects/android-x86/downloads/69704/android-x86_64-9.0-r2.iso",
+      "sha256": "",
+      "recommended": true,
+      "stability": "stable",
+      "features": [
+        "Google Play Store compatible",
+        "Excellent app compatibility",
+        "Stable and well-tested",
+        "Good performance"
+      ],
+      "requirements": {
+        "min_ram_mb": 2048,
+        "min_disk_gb": 8,
+        "min_cpu_cores": 2
+      }
+    },
+    {
+      "id": "android-11-r",
+      "name": "Android 11 (R)",
+      "version": "11.0",
+      "codename": "R",
+      "architecture": "x86_64",
+      "size_mb": 1400,
+      "size_bytes": 1468006400,
+      "url": "https://sourceforge.net/projects/android-x86/files/Release%2011/android-x86_64-11.0-r4.iso/download",
+      "mirror_url": "https://osdn.net/projects/android-x86/downloads/75303/android-x86_64-11.0-r4.iso",
+      "sha256": "",
+      "recommended": false,
+      "stability": "stable",
+      "features": [
+        "Modern Android features",
+        "Better privacy controls",
+        "Improved notifications",
+        "Conversation bubbles"
+      ],
+      "requirements": {
+        "min_ram_mb": 3072,
+        "min_disk_gb": 10,
+        "min_cpu_cores": 2
+      }
+    },
+    {
+      "id": "android-13-tiramisu",
+      "name": "Android 13 (Tiramisu)",
+      "version": "13.0",
+      "codename": "Tiramisu",
+      "architecture": "x86_64",
+      "size_mb": 1600,
+      "size_bytes": 1677721600,
+      "url": "https://sourceforge.net/projects/android-x86/files/Release%2013/android-x86_64-13.0-r1.iso/download",
+      "mirror_url": "",
+      "sha256": "",
+      "recommended": false,
+      "stability": "beta",
+      "features": [
+        "Latest Android version",
+        "Material You design",
+        "Enhanced security",
+        "Per-app language preferences",
+        "Themed app icons"
+      ],
+      "requirements": {
+        "min_ram_mb": 4096,
+        "min_disk_gb": 12,
+        "min_cpu_cores": 4
+      }
+    }
+  ],
+  "notes": {
+    "download_info": "Images are downloaded from the official Android-x86 project",
+    "verification": "SHA256 checksums should be verified after download",
+    "licensing": "Android-x86 is open source under Apache 2.0 license",
+    "compatibility": "x86_64 architecture required for KVM acceleration"
+  }
+}

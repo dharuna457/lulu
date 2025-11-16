@@ -1,0 +1,100 @@
+#!/bin/bash
+set -e
+
+# Get the actual user (not root)
+if [ -n "$SUDO_USER" ]; then
+    ACTUAL_USER="$SUDO_USER"
+else
+    ACTUAL_USER="$USER"
+fi
+
+echo "LinuxDroid Post-Installation Script"
+echo "===================================="
+
+# Add user to kvm and libvirt groups
+if id -nG "$ACTUAL_USER" | grep -qw "kvm"; then
+    echo "User already in kvm group"
+else
+    echo "Adding $ACTUAL_USER to kvm group..."
+    usermod -aG kvm "$ACTUAL_USER" 2>/dev/null || true
+fi
+
+if id -nG "$ACTUAL_USER" | grep -qw "libvirt"; then
+    echo "User already in libvirt group"
+else
+    echo "Adding $ACTUAL_USER to libvirt group..."
+    usermod -aG libvirt "$ACTUAL_USER" 2>/dev/null || true
+fi
+
+# Create application directories
+echo "Creating application directories..."
+mkdir -p /opt/linuxdroid/images
+mkdir -p /opt/linuxdroid/instances
+mkdir -p /var/log/linuxdroid
+
+# Set permissions
+echo "Setting permissions..."
+if [ -n "$ACTUAL_USER" ] && [ "$ACTUAL_USER" != "root" ]; then
+    chown -R "$ACTUAL_USER":"$ACTUAL_USER" /opt/linuxdroid 2>/dev/null || true
+    chown -R "$ACTUAL_USER":"$ACTUAL_USER" /var/log/linuxdroid 2>/dev/null || true
+fi
+
+chmod +x /usr/bin/linuxdroid 2>/dev/null || true
+chmod +x /usr/bin/linuxdroid-daemon 2>/dev/null || true
+
+# Enable and start background service
+echo "Configuring systemd service..."
+systemctl daemon-reload 2>/dev/null || true
+systemctl enable linuxdroid-download.service 2>/dev/null || true
+
+# Check KVM support
+echo ""
+echo "Checking KVM support..."
+if [ -e /dev/kvm ]; then
+    echo "✓ KVM device detected at /dev/kvm"
+
+    # Check if user has access
+    if [ -r /dev/kvm ] && [ -w /dev/kvm ]; then
+        echo "✓ KVM is accessible"
+    else
+        echo "⚠ KVM exists but may not be accessible to user $ACTUAL_USER"
+        echo "  Group changes will take effect after logout/login"
+    fi
+else
+    echo "⚠ WARNING: KVM not available (/dev/kvm not found)"
+    echo "  Please enable virtualization in your BIOS/UEFI settings"
+    echo "  Intel: Look for 'Intel VT-x' or 'Virtualization Technology'"
+    echo "  AMD: Look for 'AMD-V' or 'SVM Mode'"
+fi
+
+# Check virtualization support
+if grep -q -E '(vmx|svm)' /proc/cpuinfo; then
+    echo "✓ CPU supports virtualization"
+else
+    echo "⚠ WARNING: CPU virtualization not detected"
+    echo "  Enable it in BIOS for better performance"
+fi
+
+# Trigger first-run setup on next launch
+echo "Creating first-run marker..."
+touch /opt/linuxdroid/.first_run
+if [ -n "$ACTUAL_USER" ] && [ "$ACTUAL_USER" != "root" ]; then
+    chown "$ACTUAL_USER":"$ACTUAL_USER" /opt/linuxdroid/.first_run 2>/dev/null || true
+fi
+
+echo ""
+echo "╔════════════════════════════════════════════════════════╗"
+echo "║   LinuxDroid installed successfully!                   ║"
+echo "╚════════════════════════════════════════════════════════╝"
+echo ""
+echo "IMPORTANT: Please log out and log back in for group"
+echo "changes to take effect."
+echo ""
+echo "Then launch LinuxDroid from your applications menu or run:"
+echo "  $ linuxdroid"
+echo ""
+echo "The setup wizard will guide you through the first-run"
+echo "configuration and Android image download."
+echo ""
+
+exit 0
