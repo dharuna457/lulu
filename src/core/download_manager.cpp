@@ -13,6 +13,7 @@ DownloadManager::DownloadManager(QObject *parent)
       m_isDownloading(false),
       m_bytesReceived(0),
       m_totalBytes(0),
+      m_resumedBytes(0),
       m_previousBytes(0),
       m_downloadSpeed(0.0),
       m_retryCount(0) {
@@ -37,6 +38,7 @@ void DownloadManager::startDownload(const QString& url, const QString& destinati
     m_destination = destination;
     m_bytesReceived = 0;
     m_totalBytes = 0;
+    m_resumedBytes = 0;
     m_previousBytes = 0;
     m_retryCount = 0;
 
@@ -52,8 +54,9 @@ void DownloadManager::startDownload(const QString& url, const QString& destinati
     QIODevice::OpenMode mode = QIODevice::WriteOnly | QIODevice::Append;
 
     if (m_file->exists()) {
-        m_bytesReceived = m_file->size();
-        qDebug() << "Resuming download from" << m_bytesReceived << "bytes";
+        m_resumedBytes = m_file->size();
+        m_bytesReceived = m_resumedBytes;
+        qDebug() << "Resuming download from" << m_resumedBytes << "bytes";
     }
 
     if (!m_file->open(mode)) {
@@ -67,8 +70,8 @@ void DownloadManager::startDownload(const QString& url, const QString& destinati
     request.setRawHeader("User-Agent", "LinuxDroid/1.0");
 
     // Resume support
-    if (m_bytesReceived > 0) {
-        QByteArray rangeHeader = "bytes=" + QByteArray::number(m_bytesReceived) + "-";
+    if (m_resumedBytes > 0) {
+        QByteArray rangeHeader = "bytes=" + QByteArray::number(m_resumedBytes) + "-";
         request.setRawHeader("Range", rangeHeader);
     }
 
@@ -130,10 +133,14 @@ void DownloadManager::cancelDownload() {
 }
 
 void DownloadManager::onDownloadProgress(qint64 bytesReceived, qint64 totalBytes) {
-    m_bytesReceived += bytesReceived;
+    // bytesReceived is the total bytes received in THIS session (not including resumed bytes)
+    // So the actual total is: resumed bytes + current session bytes
+    m_bytesReceived = m_resumedBytes + bytesReceived;
 
     if (totalBytes > 0) {
-        m_totalBytes = totalBytes + (m_file ? m_file->size() - bytesReceived : 0);
+        // totalBytes is the size of the remaining download
+        // Add resumed bytes to get the actual total file size
+        m_totalBytes = m_resumedBytes + totalBytes;
     }
 
     emit downloadProgress(m_bytesReceived, m_totalBytes);

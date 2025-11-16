@@ -61,6 +61,7 @@ private:
     bool m_isDownloading;
     qint64 m_bytesReceived;
     qint64 m_totalBytes;
+    qint64 m_resumedBytes;  // Bytes already downloaded when resuming
     qint64 m_previousBytes;
     double m_downloadSpeed;
 
