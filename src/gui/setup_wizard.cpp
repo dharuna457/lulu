@@ -419,6 +419,27 @@ void DownloadProgressPage::startDownload() {
     QString filename = name.split(" - ").first().replace(" ", "_") + ".iso";
     QString destination = "/opt/linuxdroid/images/" + filename;
 
+    // Check if file already exists
+    QFile existingFile(destination);
+    if (existingFile.exists()) {
+        // File already downloaded, skip download
+        m_downloadComplete = true;
+        m_downloadedFilePath = destination;
+        m_statusLabel->setText("✅ Image already downloaded: " + name);
+        m_progressBar->setValue(100);
+
+        qint64 fileSize = existingFile.size();
+        m_sizeLabel->setText(QString("%1 (Already available)")
+                                .arg(formatSize(fileSize)));
+
+        m_backgroundButton->setEnabled(false);
+        m_cancelButton->setEnabled(false);
+
+        emit completeChanged();
+        return;
+    }
+
+    // File doesn't exist, start download
     m_statusLabel->setText("Downloading: " + name);
     m_downloadManager->startDownload(url, destination);
 }
